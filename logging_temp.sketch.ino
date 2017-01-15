@@ -1,7 +1,5 @@
-#include <WiFi.h>
-#include <WiFiClient.h>
-#include <WiFiServer.h>
-#include <WiFiUdp.h>
+// Next step add wifi shield
+// https://learn.adafruit.com/adafruit-io-basics-digital-output/arduino-wifi
 
 const int sensorPin = A0;
 const float tempBaseline = 20.0F;
