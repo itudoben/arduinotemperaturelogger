@@ -1,10 +1,12 @@
 #include <LiquidCrystal.h>
 
+// Setting up the data io and the 4 
 LiquidCrystal lcd(12,10,5,4,3,2);
 
 // Next step add wifi shield
 // https://learn.adafruit.com/adafruit-io-basics-digital-output/arduino-wifi
 
+// Setting the temperature sensor
 const int sensorPin = A0;
 const float tempBaseline = 20.0F;
 const float maxSensorVal = 1024.0F;
@@ -14,8 +16,10 @@ const float voltOffset = 0.5F;
 
 const int delayInMillis = 15 * 1000;
 
+// The switch to display the temperature.
 const int buttonPinInput = 7;
 
+// Setup of the arduino.
 void setup() {
   // put your setup code here, to run once:
   lcd.begin(16, 2);
@@ -27,12 +31,13 @@ void setup() {
   lcd.print("Temp in C");
 }
 
-unsigned long previousMillis = 0;
+//unsigned long previousMillis = 0;
 
+// The main loop of the unique thread running.
 void loop() {
-  lcd.clear();
-  lcd.setCursor(1,0); 
-  lcd.print(millis() / 1000);
+  lcd.setCursor(0,0); 
+  lcd.print("Temp in C");
+
   // put your main code here, to run repeatedly:
   unsigned long currentMillis = millis();
   
@@ -46,16 +51,17 @@ void loop() {
     printTemperature();
   }
 
-  if (currentMillis - previousMillis >= delayInMillis) {
-  
-    // save the last time you blinked the LED
-    previousMillis = currentMillis;
-
-    // if the LED is off turn it on and vice-versa:
-     printTemperature();
-  }
+//  if (currentMillis - previousMillis >= delayInMillis) {
+//  
+//    // save the last time you blinked the LED
+//    previousMillis = currentMillis;
+//
+//    // if the LED is off turn it on and vice-versa:
+//    printTemperature();
+//  }
 }
 
+// Read the temperature from the sensor.
 void printTemperature() {
   int sensorVal = analogRead(sensorPin);
   
@@ -72,4 +78,6 @@ void printTemperature() {
 
   lcd.setCursor(0,1); 
   lcd.print(temp);
+  delay(500);
+  lcd.clear();
 }
