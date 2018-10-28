@@ -1,3 +1,7 @@
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12,10,5,4,3,2);
+
 // Next step add wifi shield
 // https://learn.adafruit.com/adafruit-io-basics-digital-output/arduino-wifi
 
@@ -10,26 +14,37 @@ const float voltOffset = 0.5F;
 
 const int delayInMillis = 15 * 1000;
 
+const int buttonPinInput = 7;
+
 void setup() {
   // put your setup code here, to run once:
+  lcd.begin(16, 2);
+
   Serial.begin(9600);
-  pinMode(2, INPUT);
+  pinMode(buttonPinInput, INPUT);
+
+  lcd.setCursor(0,0); 
+  lcd.print("Temp in C");
 }
 
 unsigned long previousMillis = 0;
 
 void loop() {
+  lcd.clear();
+  lcd.setCursor(1,0); 
+  lcd.print(millis() / 1000);
   // put your main code here, to run repeatedly:
-    unsigned long currentMillis = millis();
+  unsigned long currentMillis = millis();
+  
+  int switchState = digitalRead(buttonPinInput);
 
-    int switchState = digitalRead(2);
-    
-    if (switchState == 1) {
-      Serial.print("Button pushed: ");
-      Serial.println(switchState);
+  // To see the serial output open in IDE Tools/Serial Monitor
+  if (switchState == 1) {
+    Serial.print("Button pushed: ");
+    Serial.println(switchState);
 
-      printTemperature();
-    }
+    printTemperature();
+  }
 
   if (currentMillis - previousMillis >= delayInMillis) {
   
@@ -48,12 +63,13 @@ void printTemperature() {
   float temp = (float)(voltage - voltOffset) / millivoltsPerCelsius * 1000;
 
   char str[50];
-  sprintf(str, "Sensor value: %i , voltage: ", sensorVal);
+  sprintf(str, "Sensor value: %i , voltage: ", sensorVal, voltage);
   Serial.print(str);
   Serial.print(voltage, DEC);
   Serial.print(" V, temperature: ");
   Serial.print(temp, DEC);
   Serial.println(" C");
+
+  lcd.setCursor(0,1); 
+  lcd.print(temp);
 }
-
-
